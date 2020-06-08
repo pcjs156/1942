@@ -8,20 +8,20 @@ class Const:
         'black':(0, 0, 0),
         'white':(255, 255, 255),
         'yellow':(255, 255, 0),
-        'red':(190, 0, 0),
+        'red':(190, 0, 0)
     }
     
     size = {
         'SCREEN_WIDTH':1000,
         'SCREEN_HEIGHT':800,
-        'SCREEN_SIZE':(self.size['SCREEN_WIDTH'], self.size['SCREEN_HEIGHT']),
+        'SCREEN_SIZE':(1000, 800),
 
-        'PLAYER_WIDTH':64
-        'PLAYER_HEIGHT':64
+        'PLAYER_WIDTH':64,
+        'PLAYER_HEIGHT':64,
 
         'BULLET_RADIUS':7,
         'SCOREBOARD_SIZE':32,
-        'GAMEOVER_SIZE':100,
+        'GAMEOVER_SIZE':100
     }
 
     vector = {
