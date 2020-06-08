@@ -30,9 +30,9 @@ class Const:
         'RIGHT':(1, 0),
         'DOWN':(0, 1),
         'UP':(0, -1),
-        'LEFTUP':(-1, -1),
-        'RIGHTUP':(1, -1),
-        'LEFTDOWN':(-1, 1),
-        'RIGHTDOWN':(1, 1)
+        # 'LEFTUP':(-1, -1),
+        # 'RIGHTUP':(1, -1),
+        # 'LEFTDOWN':(-1, 1),
+        # 'RIGHTDOWN':(1, 1)
     }
     
