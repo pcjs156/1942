@@ -18,6 +18,7 @@ class Const:
 
         'PLAYER_WIDTH':64,
         'PLAYER_HEIGHT':64,
+        'PLAYER_SIZE':(64, 64),
 
         'BULLET_RADIUS':7,
         'SCOREBOARD_SIZE':32,
