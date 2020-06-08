@@ -14,7 +14,7 @@ clock = pg.time.Clock()
 FPS = c.FPS
 
 # Elements Initializing
-player = Player()
+player = Player(WIDTH/2-c.size['PLAYER_WIDTH']/2, HEIGHT/2-c.size['PLAYER_HEIGHT']/2) # 화면의 중앙쯤 오게 설정
 
 # Game Loop
 running = True
@@ -34,6 +34,10 @@ while running:
                 player.goto(*c.vector['RIGHT'])
             elif event.key == pg.K_UP:
                 player.goto(*c.vector['UP'])
+            elif event.key == pg.K_DOWN:
+                player.goto(*c.vector['DOWN'])
+            elif event.key == pg.K_left:
+                player.goto(*c.vector['DOWN'])
             elif event.key == pg.K_DOWN:
                 player.goto(*c.vector['DOWN'])
         # 키업(방향을 다시 반대쪽으로 움직여 to를 [0, 0]으로)
