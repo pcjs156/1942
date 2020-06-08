@@ -1,7 +1,9 @@
 import pygame as pg
+import random as rnd
 
 from const import Const as c
 from player import Player
+from bullet import Bullet
 
 # Pygame Initializing / Setting
 pg.init()
@@ -15,6 +17,10 @@ FPS = c.FPS
 
 # Elements Initializing
 player = Player(WIDTH/2-c.size['PLAYER_WIDTH']/2, HEIGHT/2-c.size['PLAYER_HEIGHT']/2) # 화면의 중앙쯤 오게 설정
+
+bullets = []
+for _ in range(Bullet.bullet_cnt):
+    bullets.append(Bullet(0, rnd.random()*c.size['SCREEN_HEIGHT'], rnd.random()-0.5, rnd.random()-0.5))
 
 # Game Loop
 running = True
@@ -36,10 +42,6 @@ while running:
                 player.goto(*c.vector['UP'])
             elif event.key == pg.K_DOWN:
                 player.goto(*c.vector['DOWN'])
-            elif event.key == pg.K_left:
-                player.goto(*c.vector['DOWN'])
-            elif event.key == pg.K_DOWN:
-                player.goto(*c.vector['DOWN'])
         # 키업(방향을 다시 반대쪽으로 움직여 to를 [0, 0]으로)
         if event.type == pg.KEYUP:
             if event.key == pg.K_LEFT:
@@ -55,9 +57,12 @@ while running:
     이하 렌더링 : 배경이 맨 위로 와야 됨
     """
     # 배경 렌더링
-    screen.fill(c.color['black'])
+    screen.fill(c.color['BLACK'])
     # 플레이어 렌더링
     player.update(FPS)
     player.draw(screen)
+    # 총알 렌더링
+    for b in bullets:
+        b.update_and_draw(dt, screen)
 
     pg.display.update()

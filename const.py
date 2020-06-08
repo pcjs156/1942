@@ -5,10 +5,10 @@ class Const:
     DIFFICULTY = 1000
 
     color = {
-        'black':(0, 0, 0),
-        'white':(255, 255, 255),
-        'yellow':(255, 255, 0),
-        'red':(190, 0, 0)
+        'BLACK':(0, 0, 0),
+        'WHITE':(255, 255, 255),
+        'YELLOW':(255, 255, 0),
+        'RED':(190, 0, 0)
     }
     
     size = {
