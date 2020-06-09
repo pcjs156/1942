@@ -86,6 +86,7 @@ class Player:
     # 1.플레이어의 HP를 총알의 데미지만큼 깎음
     # 2.플레이어가 피격당한 CPU시간을 기록
     # 3.무적상태임을 저장
+    # 이걸 다형성이라고 하나? 여하튼 미션 8 커밋을 깜빡해서 주석만 달아놓음(...)
     def attacked(self, bullet):
         # HP가 1씩 떨어지는게 아님!
         self.HP -= bullet.damage
