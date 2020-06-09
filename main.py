@@ -18,7 +18,7 @@ def collision(obj1, obj2):
 
 # 텍스트 렌더링 함수
 def draw_text(txt, size, pos, color):
-    font = pg.font.Font('freesansbold.ttf', size)
+    font = pg.font.Font('resource/fonts/LinLibertine_RZ.ttf', size)
     r = font.render(txt, True, color)
     screen.blit(r, pos)
 
@@ -39,6 +39,9 @@ FPS = c.FPS
 # Elements Initializing
 player = Player(WIDTH/2-c.size['PLAYER_WIDTH']/2, HEIGHT/2-c.size['PLAYER_HEIGHT']/2) # 화면의 중앙쯤 오게 설정
 
+battery_image = pg.image.load("resource/img/battery.png")
+battery_image = pg.transform.scale(battery_image, (130, 80))
+battery_image = pg.transform.rotate(battery_image, 90)
 
 bullets = [Bullet(0, rnd.random()*c.size['SCREEN_HEIGHT'], rnd.random()-0.5, rnd.random()-0.5) for _ in range(10)]
 time_for_adding_bullets = 0
@@ -47,6 +50,9 @@ background = Background()
 
 pg.mixer.music.load('resource/sounds/bgm.wav')
 pg.mixer.music.play(-1)
+
+battery_cells_info = [((25, i*19+75, 30, 19), c.color["BATTERY"][i]) for i in range(5)]
+
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -105,7 +111,6 @@ while running:
         # 키다운만 된 상태로 게임이 종료되면 계속 키다운된 방향으로 이동함
         player.goto(0, 0); player.update(dt)
         background.goto(0, 0); player.update(dt)
-        print(player.to)
 
     """
     이하 렌더링 : 배경이 맨 위로 와야 됨
@@ -127,8 +132,14 @@ while running:
 
     else:
         score = time.time() - start_time
-        txt = "Time: {:.1f}, Bullets: {}, HP: {}".format(score, len(bullets), player.HP)
+        txt = "Time: {:.1f}, Bullets: {}".format(score, len(bullets))
+        hp_text = "HP: {}".format(player.HP)
         draw_text(txt, 32, (10, 10), c.color['WHITE'])
+        draw_text(hp_text, 20, (20, 180), c.color['RED'])
+        # HP바(배터리 렌더링)
+        screen.blit(battery_image, (0, 50))
+        for i in range(player.HP):
+            pg.draw.rect(screen, battery_cells_info[5-i-1][1], battery_cells_info[5-i-1][0])
 
     pg.display.update()
 

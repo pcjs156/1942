@@ -3,8 +3,6 @@ import time
 
 from const import Const as c
 
-
-
 class Player:
     SPEED = 30
     # 미션 2 수정 : Player 이미지를 폭발 이미지로 바꾸는 코드를 main.py에서 player.py로 옮김 
@@ -38,7 +36,7 @@ class Player:
         
     # 화면에 플레이어를 렌더링
     def draw(self, screen):
-        # 무적인 경우
+        # 죽은 경우
         if self.HP == 0:
             self.image = Player.boom_image
         # 무적인 경우
