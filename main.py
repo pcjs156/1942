@@ -104,8 +104,8 @@ while running:
         draw_text(txt, 32, (WIDTH/2-150, HEIGHT/2 + 50), c.color['WHITE'])
 
     else:
-        scroe = time.time() - start_time
-        txt = "Time: {:.1f}, Bullets: {}".format(time.time() - start_time, len(bullets))
+        score = time.time() - start_time
+        txt = "Time: {:.1f}, Bullets: {}".format(score, len(bullets))
         draw_text(txt, 32, (10, 10), c.color['WHITE'])        
 
     pg.display.update()
@@ -114,8 +114,11 @@ while running:
         # 충돌 감지
         for b in bullets:
             if collision(player, b):
-                time.sleep(2)
                 gameover = True
+        if gameover:
+            draw_text("GAME OVER", 100, (WIDTH/2-300, HEIGHT/2-50), c.color['RED'])
+            txt = "Time: {:.1f} Bullets: {}".format(score, len(bullets))
+            draw_text(txt, 32, (WIDTH/2-150, HEIGHT/2 + 50), c.color['WHITE'])
                 
         # 1초당 총알 하나씩 추가
         time_for_adding_bullets += dt * c.DIFFICULTY
