@@ -36,6 +36,7 @@ FPS = c.FPS
 
 # Elements Initializing
 player = Player(WIDTH/2-c.size['PLAYER_WIDTH']/2, HEIGHT/2-c.size['PLAYER_HEIGHT']/2) # 화면의 중앙쯤 오게 설정
+# 미션 2 : 폭발하는 이미지를 로드 / 플레이어의 사이즈에 맞춤
 boom_image = pg.image.load('resource/img/flame.png')
 boom_image = pg.transform.scale(boom_image, c.size['PLAYER_SIZE'])
 
@@ -62,6 +63,7 @@ while running:
     bg_pos -= 0.01 * dt
     screen.blit(bg_image, (bg_pos, 0))
 
+    # 게임이 종료되면 pg.KEYDOWN, pg.KEYUP 이벤트는 받지 않도록 함
     if getting_event :
         # 이벤트 리스너
         for event in pg.event.get():
@@ -88,6 +90,8 @@ while running:
                     player.goto(*c.vector['DOWN'])
                 elif event.key == pg.K_DOWN:
                     player.goto(*c.vector['UP'])
+                    
+    # 게임이 종료되면 게임 종료 이벤트만 받도록 함
     else :
         for event in pg.event.get():
             # 종료
@@ -124,10 +128,10 @@ while running:
             if collision(player, b):
                 gameover = True
                 getting_event = False
-
+                # 미션 1 : boom.wav를 불러와 1번 재생
                 pg.mixer.music.load('resource/sounds/boom.wav')
                 pg.mixer.music.play(1)
-
+                # 미션 2 : 플레이어의 이미지를 폭발하는 이미지로 변경
                 player.image = boom_image
                 
         # 1초당 총알 하나씩 추가
