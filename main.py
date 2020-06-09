@@ -103,6 +103,10 @@ while running:
             # 종료
             if event.type == pg.QUIT:
                 running = False
+        # 화면, 플레이어 모두 움직이지 않도록 설정
+        # 키다운만 된 상태로 게임이 종료되면 계속 키다운된 방향으로 이동함
+        player.goto(0, 0); player.update(dt)
+        background.goto(0, 0); player.update(dt)
 
     """
     이하 렌더링 : 배경이 맨 위로 와야 됨
@@ -124,25 +128,38 @@ while running:
 
     else:
         score = time.time() - start_time
-        txt = "Time: {:.1f}, Bullets: {}".format(score, len(bullets))
-        draw_text(txt, 32, (10, 10), c.color['WHITE'])        
+        txt = "Time: {:.1f}, Bullets: {}, HP: {}".format(score, len(bullets), player.HP)
+        draw_text(txt, 32, (10, 10), c.color['WHITE'])
 
     pg.display.update()
 
-    # if not gameover:
-    #     # 충돌 감지
-    #     for b in bullets:
-    #         if collision(player, b):
-    #             gameover = True
-    #             getting_event = False
-    #             # 미션 1 : boom.wav를 불러와 1번 재생
-    #             pg.mixer.music.load('resource/sounds/boom.wav')
-    #             pg.mixer.music.play(1)
-    #             # 미션 2 : 플레이어의 이미지를 폭발하는 이미지로 변경
-    #             player.image = boom_image
+    if not gameover:
+        # 충돌 감지
+        for b in bullets:
+            if collision(player, b):
+                # 무적상태가 아니라면...(피격 당하지 않았고, 따라서 무적도 아닌 경우)
+                if player.is_invincible is False:
+                    player.attacked()
                 
-    #     # 1초당 총알 하나씩 추가
-    #     time_for_adding_bullets += dt * c.DIFFICULTY
-    #     if time_for_adding_bullets > 1000 :
-    #         bullets.append(Bullet(0, rnd.random()*c.size['SCREEN_HEIGHT'], rnd.random()-0.5, rnd.random()-0.5))
-    #         time_for_adding_bullets -= 1000
+                # 무적상태라면(전에 맞은 기록?이 남아있었다면)
+                else :
+                    # 만약 시간을 체크했는데 무적시간이 지났다면
+                    if player.invincible_time_chk() is False:
+                        # 일단 한 대 맞고!
+                        player.attacked()
+                        # 게임이 종료될 조건인지 확인
+                        if player.HP == 0:
+                            gameover = True
+                            getting_event = False
+                            # 미션 1 : boom.wav를 불러와 1번 재생
+                            pg.mixer.music.load('resource/sounds/boom.wav')
+                            pg.mixer.music.play(1)
+                            # 미션 2 : 플레이어의 이미지를 폭발하는 이미지로 변경
+                            player.image = boom_image
+    
+
+        # 1초당 총알 하나씩 추가
+        time_for_adding_bullets += dt * c.DIFFICULTY
+        if time_for_adding_bullets > 1000 :
+            bullets.append(Bullet(0, rnd.random()*c.size['SCREEN_HEIGHT'], rnd.random()-0.5, rnd.random()-0.5))
+            time_for_adding_bullets -= 1000

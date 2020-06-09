@@ -1,5 +1,6 @@
 class Const:
     FPS = 60
+    INVINCIBLE = 1
 
     # 1이 기본, 클수록 어려움(초당 총알 갯수)
     DIFFICULTY = 1
