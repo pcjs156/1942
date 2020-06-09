@@ -36,6 +36,8 @@ FPS = c.FPS
 
 # Elements Initializing
 player = Player(WIDTH/2-c.size['PLAYER_WIDTH']/2, HEIGHT/2-c.size['PLAYER_HEIGHT']/2) # 화면의 중앙쯤 오게 설정
+boom_image = pg.image.load('resource/img/flame.png')
+boom_image = pg.transform.scale(boom_image, c.size['PLAYER_SIZE'])
 
 bullets = [Bullet(0, rnd.random()*c.size['SCREEN_HEIGHT'], rnd.random()-0.5, rnd.random()-0.5) for _ in range(10)]
 time_for_adding_bullets = 0
@@ -122,8 +124,11 @@ while running:
             if collision(player, b):
                 gameover = True
                 getting_event = False
+
                 pg.mixer.music.load('resource/sounds/boom.wav')
                 pg.mixer.music.play(1)
+
+                player.image = boom_image
                 
         # 1초당 총알 하나씩 추가
         time_for_adding_bullets += dt * c.DIFFICULTY
