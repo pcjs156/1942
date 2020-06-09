@@ -9,7 +9,8 @@ class Const:
         'BLACK':(0, 0, 0),
         'WHITE':(255, 255, 255),
         'YELLOW':(255, 255, 0),
-        'RED':(190, 0, 0),
+        'RED':(255, 0, 0),
+        'BLUE':(0, 0, 255),
         'BATTERY':[(239,69,54),
             (251,176,64),
             (248,237,60),
@@ -28,6 +29,9 @@ class Const:
         'PLAYER_SIZE':(64, 64),
 
         'BULLET_RADIUS':7,
+        'WEAK_BULLET_RADIUS':16,
+        'NORMAL_BULLET_RADIUS':8,
+        'STRONG_BULLET_RADIUS':4,
         'SCOREBOARD_SIZE':32,
         'GAMEOVER_SIZE':100
     }

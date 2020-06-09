@@ -37,7 +37,8 @@ class Player:
     # 화면에 플레이어를 렌더링
     def draw(self, screen):
         # 죽은 경우
-        if self.HP == 0:
+        # HP가 1씩 떨어지는게 아니기 때문에 조건을 변경함
+        if self.HP <= 0:
             self.image = Player.boom_image
         # 무적인 경우
         elif self.is_invincible is True:
@@ -82,11 +83,12 @@ class Player:
         self.pos[1] = min(max(self.pos[1], c.size['PLAYER_HEIGHT']), c.size['SCREEN_HEIGHT']-c.size['PLAYER_HEIGHT'])
     
     # * 피격당했을 경우 
-    # 1.플레이어의 HP를 1 깎음
+    # 1.플레이어의 HP를 총알의 데미지만큼 깎음
     # 2.플레이어가 피격당한 CPU시간을 기록
     # 3.무적상태임을 저장
-    def attacked(self):
-        self.HP -= 1
+    def attacked(self, bullet):
+        # HP가 1씩 떨어지는게 아님!
+        self.HP -= bullet.damage
         self.attacked_time = time.time()
         self.is_invincible = True
 

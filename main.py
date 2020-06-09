@@ -6,7 +6,7 @@ import sys
 
 from const import Const as c
 from player import Player
-from bullet import Bullet
+from bullet import *
 from background import Background
 
 # 충돌 감지 함수
@@ -43,7 +43,8 @@ battery_image = pg.image.load("resource/img/battery.png")
 battery_image = pg.transform.scale(battery_image, (130, 80))
 battery_image = pg.transform.rotate(battery_image, 90)
 
-bullets = [Bullet(0, rnd.random()*c.size['SCREEN_HEIGHT'], rnd.random()-0.5, rnd.random()-0.5) for _ in range(10)]
+# 초기에도 랜덤하게 총알을 받아옴
+bullets = [Bullet.return_random_bullet(0, rnd.random()*c.size['SCREEN_HEIGHT'], rnd.random()-0.5, rnd.random()-0.5) for _ in range(10)]
 time_for_adding_bullets = 0
 
 background = Background()
@@ -151,22 +152,23 @@ while running:
                 # 무적상태가 아니라면...(피격 당하지 않았고, 따라서 무적도 아닌 경우)
                 if player.is_invincible is False:
                     if player.invincible_time_chk() is False:
-                        # 일단 한 대 맞고!
-                        player.attacked()
+                        # b의 데미지를 attacked안에서 확인
+                        player.attacked(b)
                         # 게임이 종료될 조건인지 확인
-                        if player.HP == 0:
+                        if player.HP <= 0:
                             gameover = True
                             getting_event = False
                             # 미션 1 : boom.wav를 불러와 1번 재생
                             pg.mixer.music.load('resource/sounds/boom.wav')
                             pg.mixer.music.play(1)
                     else:
-                        player.attacked()
+                        # b의 데미지를 attacked안에서 확인
+                        player.attacked(b)
           
     
 
         # 1초당 총알 하나씩 추가
         time_for_adding_bullets += dt * c.DIFFICULTY
         if time_for_adding_bullets > 1000 :
-            bullets.append(Bullet(0, rnd.random()*c.size['SCREEN_HEIGHT'], rnd.random()-0.5, rnd.random()-0.5))
+            bullets.append(Bullet.return_random_bullet(0, rnd.random()*c.size['SCREEN_HEIGHT'], rnd.random()-0.5, rnd.random()-0.5))
             time_for_adding_bullets -= 1000
