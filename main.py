@@ -52,6 +52,7 @@ pg.mixer.music.play(-1)
 # Game Loop
 running = True
 gameover = False
+getting_event = True
 start_time = time.time()
 while running:
     dt = clock.tick(FPS)
@@ -59,31 +60,32 @@ while running:
     bg_pos -= 0.01 * dt
     screen.blit(bg_image, (bg_pos, 0))
 
-    # 이벤트 리스너
-    for event in pg.event.get():
-        # 종료
-        if event.type == pg.QUIT:
-            running = False
-        # 키다운
-        if event.type == pg.KEYDOWN:
-            if event.key == pg.K_LEFT:
-                player.goto(*c.vector['LEFT'])
-            elif event.key == pg.K_RIGHT:
-                player.goto(*c.vector['RIGHT'])
-            elif event.key == pg.K_UP:
-                player.goto(*c.vector['UP'])
-            elif event.key == pg.K_DOWN:
-                player.goto(*c.vector['DOWN'])
-        # 키업(방향을 다시 반대쪽으로 움직여 to를 [0, 0]으로)
-        if event.type == pg.KEYUP:
-            if event.key == pg.K_LEFT:
-                player.goto(*c.vector['RIGHT'])
-            elif event.key == pg.K_RIGHT:
-                player.goto(*c.vector['LEFT'])
-            elif event.key == pg.K_UP:
-                player.goto(*c.vector['DOWN'])
-            elif event.key == pg.K_DOWN:
-                player.goto(*c.vector['UP'])
+    if getting_event :
+        # 이벤트 리스너
+        for event in pg.event.get():
+            # 종료
+            if event.type == pg.QUIT:
+                running = False
+            # 키다운
+            if event.type == pg.KEYDOWN:
+                if event.key == pg.K_LEFT:
+                    player.goto(*c.vector['LEFT'])
+                elif event.key == pg.K_RIGHT:
+                    player.goto(*c.vector['RIGHT'])
+                elif event.key == pg.K_UP:
+                    player.goto(*c.vector['UP'])
+                elif event.key == pg.K_DOWN:
+                    player.goto(*c.vector['DOWN'])
+            # 키업(방향을 다시 반대쪽으로 움직여 to를 [0, 0]으로)
+            if event.type == pg.KEYUP:
+                if event.key == pg.K_LEFT:
+                    player.goto(*c.vector['RIGHT'])
+                elif event.key == pg.K_RIGHT:
+                    player.goto(*c.vector['LEFT'])
+                elif event.key == pg.K_UP:
+                    player.goto(*c.vector['DOWN'])
+                elif event.key == pg.K_DOWN:
+                    player.goto(*c.vector['UP'])
 
     """
     이하 렌더링 : 배경이 맨 위로 와야 됨
@@ -114,6 +116,7 @@ while running:
         for b in bullets:
             if collision(player, b):
                 gameover = True
+                getting_event = False
                 pg.mixer.music.load('resource/sounds/boom.wav')
                 pg.mixer.music.play(1)
                 
