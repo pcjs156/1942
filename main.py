@@ -50,15 +50,12 @@ pg.mixer.music.play(-1)
 
 # Game Loop
 running = True
+gameover = False
 start_time = time.time()
 while running:
     dt = clock.tick(FPS)
 
-    # 1초당 총알 하나씩 추가
-    time_for_adding_bullets += dt * c.DIFFICULTY
-    if time_for_adding_bullets > 1000 :
-        bullets.append(Bullet(0, rnd.random()*c.size['SCREEN_HEIGHT'], rnd.random()-0.5, rnd.random()-0.5))
-        time_for_adding_bullets -= 1000
+    
 
     bg_pos -= 0.01 * dt
     screen.blit(bg_image, (bg_pos, 0))
@@ -101,13 +98,29 @@ while running:
     for b in bullets:
         b.update_and_draw(dt, screen)
     # 텍스트 렌더링
-    txt = "Time: {:.1f}, Bullets: {}".format(time.time() - start_time, len(bullets))
-    draw_text(txt, 32, (10, 10), c.color['WHITE'])
+    if gameover:
+        draw_text("GAME OVER", 100, (WIDTH/2-300, HEIGHT/2-50), c.color['RED'])
+        txt = "Time: {:.1f} Bullets: {}".format(score, len(bullets))
+        draw_text(txt, 32, (WIDTH/2-150, HEIGHT/2 + 50), c.color['WHITE'])
+
+    else:
+        scroe = time.time() - start_time
+        txt = "Time: {:.1f}, Bullets: {}".format(time.time() - start_time, len(bullets))
+        draw_text(txt, 32, (10, 10), c.color['WHITE'])        
 
     pg.display.update()
 
-    # 충돌 감지
-    for b in bullets:
-        if collision(player, b):
-            time.sleep(2)
-            running = False
+    if not gameover:
+        # 충돌 감지
+        for b in bullets:
+            if collision(player, b):
+                time.sleep(2)
+                gameover = True
+                
+        # 1초당 총알 하나씩 추가
+        time_for_adding_bullets += dt * c.DIFFICULTY
+        if time_for_adding_bullets > 1000 :
+            bullets.append(Bullet(0, rnd.random()*c.size['SCREEN_HEIGHT'], rnd.random()-0.5, rnd.random()-0.5))
+            time_for_adding_bullets -= 1000
+
+        
