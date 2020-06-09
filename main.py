@@ -86,6 +86,11 @@ while running:
                     player.goto(*c.vector['DOWN'])
                 elif event.key == pg.K_DOWN:
                     player.goto(*c.vector['UP'])
+    else :
+        for event in pg.event.get():
+            # 종료
+            if event.type == pg.QUIT:
+                running = False
 
     """
     이하 렌더링 : 배경이 맨 위로 와야 됨
