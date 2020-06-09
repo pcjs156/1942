@@ -38,9 +38,7 @@ FPS = c.FPS
 
 # Elements Initializing
 player = Player(WIDTH/2-c.size['PLAYER_WIDTH']/2, HEIGHT/2-c.size['PLAYER_HEIGHT']/2) # 화면의 중앙쯤 오게 설정
-# 미션 2 : 폭발하는 이미지를 로드 / 플레이어의 사이즈에 맞춤
-boom_image = pg.image.load('resource/img/flame.png')
-boom_image = pg.transform.scale(boom_image, c.size['PLAYER_SIZE'])
+
 
 bullets = [Bullet(0, rnd.random()*c.size['SCREEN_HEIGHT'], rnd.random()-0.5, rnd.random()-0.5) for _ in range(10)]
 time_for_adding_bullets = 0
@@ -107,6 +105,7 @@ while running:
         # 키다운만 된 상태로 게임이 종료되면 계속 키다운된 방향으로 이동함
         player.goto(0, 0); player.update(dt)
         background.goto(0, 0); player.update(dt)
+        print(player.to)
 
     """
     이하 렌더링 : 배경이 맨 위로 와야 됨
@@ -134,16 +133,12 @@ while running:
     pg.display.update()
 
     if not gameover:
+        player.invincible_time_chk()
         # 충돌 감지
         for b in bullets:
             if collision(player, b):
                 # 무적상태가 아니라면...(피격 당하지 않았고, 따라서 무적도 아닌 경우)
                 if player.is_invincible is False:
-                    player.attacked()
-                
-                # 무적상태라면(전에 맞은 기록?이 남아있었다면)
-                else :
-                    # 만약 시간을 체크했는데 무적시간이 지났다면
                     if player.invincible_time_chk() is False:
                         # 일단 한 대 맞고!
                         player.attacked()
@@ -154,8 +149,9 @@ while running:
                             # 미션 1 : boom.wav를 불러와 1번 재생
                             pg.mixer.music.load('resource/sounds/boom.wav')
                             pg.mixer.music.play(1)
-                            # 미션 2 : 플레이어의 이미지를 폭발하는 이미지로 변경
-                            player.image = boom_image
+                    else:
+                        player.attacked()
+          
     
 
         # 1초당 총알 하나씩 추가

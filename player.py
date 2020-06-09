@@ -7,9 +7,20 @@ from const import Const as c
 
 class Player:
     SPEED = 30
+    # 미션 2 수정 : Player 이미지를 폭발 이미지로 바꾸는 코드를 main.py에서 player.py로 옮김 
+    boom_image = pg.image.load('resource/img/flame.png')
+    boom_image = pg.transform.scale(boom_image, c.size['PLAYER_SIZE'])
+
+    # 미션 4 : 반짝이는 효과를 색반전으로 나타낼 예정
+    # 색반전 이미지, 비 색반전 이미지를 분리하여 로드
+    non_negative_image = pg.image.load('resource/img/player.png')
+    non_negative_image = pg.transform.scale(non_negative_image, c.size['PLAYER_SIZE'])
+
+    negative_image = pg.image.load('resource/img/player_negative.png')
+    negative_image = pg.transform.scale(negative_image, c.size['PLAYER_SIZE'])
+
     def __init__(self, x, y):
-        self.image = pg.image.load('resource/img/player.png')
-        self.image = pg.transform.scale(self.image, c.size['PLAYER_SIZE'])
+        self.image = Player.non_negative_image
         # 좌표는 각각 [x, y]좌표
         self.pos = [x, y] # 플레이어의 현재 위치(update에 의해 갱신됨)
         self.to = [0, 0] # 플레이어가 이동할 방향(상, 하, 좌, 우, ...)
@@ -17,12 +28,32 @@ class Player:
 
         # HP
         self.HP = 5        
+        self.attacked_time = 0
         # 무적 시간 : FPS * 5초
         self.invincible_time = 0
         self.is_invincible = False
-    
+
+        # 색반전으로 무적시간동안 플레이어가 반짝거리도록 조정
+        self.now_negative_image = False
+        
     # 화면에 플레이어를 렌더링
     def draw(self, screen):
+        # 무적인 경우
+        if self.HP == 0:
+            self.image = Player.boom_image
+        # 무적인 경우
+        elif self.is_invincible is True:
+            if self.now_negative_image:
+                self.image = Player.non_negative_image
+                self.now_negative_image = False
+            else:
+                self.image = Player.negative_image
+                self.now_negative_image = True
+
+        # 무적이 아닌 경우    
+        else :
+            self.image = Player.non_negative_image
+
         # 회전 구현
         if self.to == c.vector['LEFT'] : self.angle = 90
         elif self.to == c.vector['LEFTDOWN'] : self.angle = 135
