@@ -1,9 +1,27 @@
 import pygame as pg
 import random as rnd
+import math
+import time
 
 from const import Const as c
 from player import Player
 from bullet import Bullet
+
+# 충돌 감지 함수
+def collision(obj1, obj2):
+    if math.sqrt((obj1.pos[0] - obj2.pos[0])**2 +
+                 (obj1.pos[1] - obj2.pos[1])**2) < 20 :
+        return True
+    return False
+
+# 텍스트 렌더링 함수
+def draw_text(txt, size, pos, color):
+    font = pg.font.Font('freesansbold.ttf', size)
+    r = font.render(txt, True, color)
+    screen.blit(r, pos)
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 
 # Pygame Initializing / Setting
 pg.init()
@@ -18,15 +36,25 @@ FPS = c.FPS
 # Elements Initializing
 player = Player(WIDTH/2-c.size['PLAYER_WIDTH']/2, HEIGHT/2-c.size['PLAYER_HEIGHT']/2) # 화면의 중앙쯤 오게 설정
 
-bullets = []
-for _ in range(Bullet.bullet_cnt):
-    bullets.append(Bullet(0, rnd.random()*c.size['SCREEN_HEIGHT'], rnd.random()-0.5, rnd.random()-0.5))
+bullets = [Bullet(0, rnd.random()*c.size['SCREEN_HEIGHT'], rnd.random()-0.5, rnd.random()-0.5) for _ in range(10)]
+time_for_adding_bullets = 0
+
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 
 # Game Loop
 running = True
+start_time = time.time()
 while running:
     dt = clock.tick(FPS)
-    
+
+    # 1초당 총알 하나씩 추가
+    time_for_adding_bullets += dt
+    if time_for_adding_bullets > 1000 :
+        bullets.append(Bullet(0, rnd.random()*c.size['SCREEN_HEIGHT'], rnd.random()-0.5, rnd.random()-0.5))
+        time_for_adding_bullets -= 1000
+
     # 이벤트 리스너
     for event in pg.event.get():
         # 종료
@@ -64,5 +92,14 @@ while running:
     # 총알 렌더링
     for b in bullets:
         b.update_and_draw(dt, screen)
+    # 텍스트 렌더링
+    txt = "Time: {:.1f}, Bullets: {}".format(time.time() - start_time, len(bullets))
+    draw_text(txt, 32, (10, 10), c.color['WHITE'])
 
     pg.display.update()
+
+    # 충돌 감지
+    for b in bullets:
+        if collision(player, b):
+            time.sleep(2)
+            running = False
