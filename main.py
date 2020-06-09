@@ -115,15 +115,9 @@ while running:
         for b in bullets:
             if collision(player, b):
                 gameover = True
-        if gameover:
-            draw_text("GAME OVER", 100, (WIDTH/2-300, HEIGHT/2-50), c.color['RED'])
-            txt = "Time: {:.1f} Bullets: {}".format(score, len(bullets))
-            draw_text(txt, 32, (WIDTH/2-150, HEIGHT/2 + 50), c.color['WHITE'])
                 
         # 1초당 총알 하나씩 추가
         time_for_adding_bullets += dt * c.DIFFICULTY
         if time_for_adding_bullets > 1000 :
             bullets.append(Bullet(0, rnd.random()*c.size['SCREEN_HEIGHT'], rnd.random()-0.5, rnd.random()-0.5))
             time_for_adding_bullets -= 1000
-
-        
