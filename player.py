@@ -1,6 +1,9 @@
 import pygame as pg
+import time
 
 from const import Const as c
+
+
 
 class Player:
     SPEED = 30
@@ -12,6 +15,11 @@ class Player:
         self.to = [0, 0] # 플레이어가 이동할 방향(상, 하, 좌, 우, ...)
         self.angle = 0
 
+        # HP
+        self.HP = 5        
+        # 무적 시간 : FPS * 5초
+        self.invincible_time = 0
+        self.is_invincible = False
     
     # 화면에 플레이어를 렌더링
     def draw(self, screen):
@@ -43,3 +51,21 @@ class Player:
         # 화면 밖으로 나가지 못하도록 제한
         self.pos[0] = min(max(self.pos[0], c.size['PLAYER_WIDTH']), c.size['SCREEN_WIDTH']-c.size['PLAYER_WIDTH'])
         self.pos[1] = min(max(self.pos[1], c.size['PLAYER_HEIGHT']), c.size['SCREEN_HEIGHT']-c.size['PLAYER_HEIGHT'])
+    
+    # * 피격당했을 경우 
+    # 1.플레이어의 HP를 1 깎음
+    # 2.플레이어가 피격당한 CPU시간을 기록
+    # 3.무적상태임을 저장
+    def attacked(self):
+        self.HP -= 1
+        self.attacked_time = time.time()
+        self.is_invincible = True
+
+    # * 피격당했는데 또 맞았을 경우 메인 함수에서 체크함
+    def invincible_time_chk(self):
+        # 제일 마지막에 피격당한 시간에서 c.INVINCIBLE초 이상 흘렀으면 무적시간이 끝난 것
+        if time.time() - self.attacked_time >= c.INVINCIBLE:
+            self.is_invincible = False
+            return False
+        else :
+            return True
