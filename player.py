@@ -3,6 +3,7 @@ import pygame as pg
 from const import Const as c
 
 class Player:
+    SPEED = 30
     def __init__(self, x, y):
         self.image = pg.image.load('resource/img/player.png')
         self.image = pg.transform.scale(self.image, c.size['PLAYER_SIZE'])
@@ -11,7 +12,6 @@ class Player:
         self.to = [0, 0] # 플레이어가 이동할 방향(상, 하, 좌, 우, ...)
         self.angle = 0
 
-        self.SPEED = 30
     
     # 화면에 플레이어를 렌더링
     def draw(self, screen):
@@ -37,7 +37,7 @@ class Player:
 
     # 화면상의 플레이어 위치를 업데이트
     def update(self, dt):
-        dt = min(self.SPEED, dt)
+        dt = min(Player.SPEED, dt)
         self.pos[0] += dt * self.to[0]
         self.pos[1] += dt * self.to[1]
         # 화면 밖으로 나가지 못하도록 제한
