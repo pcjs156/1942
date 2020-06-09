@@ -2,6 +2,7 @@ import pygame as pg
 import random as rnd
 import math
 import time
+import sys
 
 from const import Const as c
 from player import Player
@@ -54,8 +55,6 @@ gameover = False
 start_time = time.time()
 while running:
     dt = clock.tick(FPS)
-
-    
 
     bg_pos -= 0.01 * dt
     screen.blit(bg_image, (bg_pos, 0))
@@ -115,6 +114,8 @@ while running:
         for b in bullets:
             if collision(player, b):
                 gameover = True
+                pg.mixer.music.load('resource/sounds/boom.wav')
+                pg.mixer.music.play(1)
                 
         # 1초당 총알 하나씩 추가
         time_for_adding_bullets += dt * c.DIFFICULTY
