@@ -1,8 +1,8 @@
 class Const:
     FPS = 60
 
-    # 작을수록 어려움
-    DIFFICULTY = 1000
+    # 1이 기본, 클수록 어려움(초당 총알 갯수)
+    DIFFICULTY = 1
 
     color = {
         'BLACK':(0, 0, 0),

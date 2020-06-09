@@ -39,6 +39,11 @@ player = Player(WIDTH/2-c.size['PLAYER_WIDTH']/2, HEIGHT/2-c.size['PLAYER_HEIGHT
 bullets = [Bullet(0, rnd.random()*c.size['SCREEN_HEIGHT'], rnd.random()-0.5, rnd.random()-0.5) for _ in range(10)]
 time_for_adding_bullets = 0
 
+bg_image = pg.image.load('resource/img/bg.jpg')
+bg_pos = 0
+
+pg.mixer.music.load('resource/sounds/bgm.wav')
+pg.mixer.music.play(-1)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -50,10 +55,13 @@ while running:
     dt = clock.tick(FPS)
 
     # 1초당 총알 하나씩 추가
-    time_for_adding_bullets += dt
+    time_for_adding_bullets += dt * c.DIFFICULTY
     if time_for_adding_bullets > 1000 :
         bullets.append(Bullet(0, rnd.random()*c.size['SCREEN_HEIGHT'], rnd.random()-0.5, rnd.random()-0.5))
         time_for_adding_bullets -= 1000
+
+    bg_pos -= 0.01 * dt
+    screen.blit(bg_image, (bg_pos, 0))
 
     # 이벤트 리스너
     for event in pg.event.get():
@@ -85,7 +93,7 @@ while running:
     이하 렌더링 : 배경이 맨 위로 와야 됨
     """
     # 배경 렌더링
-    screen.fill(c.color['BLACK'])
+    screen.blit(bg_image, (bg_pos, 0))
     # 플레이어 렌더링
     player.update(FPS)
     player.draw(screen)
