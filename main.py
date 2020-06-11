@@ -165,7 +165,6 @@ while running:
                         # b의 데미지를 attacked안에서 확인
                         player.attacked(b)
           
-    
 
         # 1초당 총알 하나씩 추가
         time_for_adding_bullets += dt * c.DIFFICULTY
