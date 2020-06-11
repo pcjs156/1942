@@ -1,6 +1,16 @@
 import pickle
 import os
 
+import pygame as pg
+from const import Const as c
+
+# 텍스트 렌더링 함수
+def draw_text(screen, txt, size, pos, color):
+    font = pg.font.Font('resource/fonts/LinLibertine_RZ.ttf', size)
+    r = font.render(txt, True, color)
+    screen.blit(r, pos)
+
+
 # 미션 9 : 사용자의 가장 오래 버틴 생존 시간을 최대 10개까지 파일에 기록한다.
 class RankingProcessor:
     def __init__(self, filename):
@@ -50,9 +60,35 @@ class RankingProcessor:
             pickle.dump(self.records, f)
         
 
+    # 점수판 렌더링
+    def render_ranking_board(self, screen):
+        width, height = screen.get_size()
+        board_width, board_height = width * 0.3, height * 0.45
+        
+        pg.draw.rect(screen, c.color['GREY'], [width/2-board_width/2-5, 250, board_width, board_height])
+
+        # 등수 렌더링(폰트때문에 점수 기록과 따로 렌더링함)
+        for i in range(len(self.records)):
+            if i == 0 :
+                rank = "1st"
+            elif i == 1 :
+                rank = "2nd"
+            elif i == 2 :
+                rank = "3rd"
+            else :
+                rank = str(i+1) + "th"
+            draw_text(screen, "{:>5}".format(rank), 40, (width/2-board_width/2+50, 270 + 30 * i), c.color['BLACK'])
+
+        # 점수 기록 렌더링
+        for i in range(len(self.records)):
+            draw_text(screen, "{:>6}".format(self.records[i]), 40, (width/2-board_width/2+140, 270 + 30 * i), c.color['BLACK'])
+
+        
+
 if __name__ == "__main__":
     filename = "ranking"
-    ranking_class = Ranking(filename)
-    for i in range(1, 100):
-        ranking_class.add_to_ranking_file(i*1.13)
-        print(ranking_class.load_ranking_file())
+    ranking_class = RankingProcessor(filename)
+    # 테스트용
+    # for i in range(1, 100):
+    #     ranking_class.add_to_ranking_file(i*1.13)
+    #     print(ranking_class.load_ranking_file())
