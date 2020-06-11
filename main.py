@@ -64,6 +64,21 @@ while True:
     restart = False
     ranking_displayed = False
 
+    ready_time = time.time()
+    while time.time() - ready_time < 3 :
+        gap = int(time.time() - ready_time)
+        screen.fill(c.color['BLACK'])
+        draw_text(screen, "Get Ready!", 80, (330, 250), c.color['RED'])
+        draw_text(screen, "{}".format(3 - gap), 50, (495, 400), c.color['WHITE'])
+        pg.display.update()
+    
+    ready_time = time.time()
+    while time.time() - ready_time < 1 :
+        gap = int(time.time() - ready_time)
+        screen.fill(c.color['BLACK'])
+        draw_text(screen, "Dodge!", 80, (390, 320), c.color['RED'])
+        pg.display.update()
+
     start_time = time.time()
     while running:
         dt = clock.tick(FPS)
