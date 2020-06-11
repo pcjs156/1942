@@ -31,6 +31,7 @@ FPS = c.FPS
 # 게임을 시작하기 위한 초기화 과정과 실제 게임 루프를 묶음으로써
 # 특정 입력을 받았을 때 게임을 다시 시작할 수 있도록 함
 while True:
+    
     # Elements Initializing ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     player = Player(WIDTH/2 - c.size['PLAYER_WIDTH']/2, HEIGHT/2 - c.size['PLAYER_HEIGHT']/2) # 화면의 중앙쯤 오게 설정
 
@@ -55,7 +56,6 @@ while True:
 
 
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 
     # Game Loop
     running = True
@@ -113,7 +113,7 @@ while True:
                 
                 elif event.type == pg.KEYDOWN:
                     if event.key == pg.K_SPACE:
-                        ranking_processor.render_ranking_board(screen)
+                        ranking_processor.render_ranking_board(screen, score)
                         restart = True
                         running = False
                 
@@ -141,6 +141,7 @@ while True:
             b.update_and_draw(dt, screen)
         # 텍스트 렌더링
         if gameover:
+            score = round(score, 1)
             txt = "Time: {:.1f} Bullets: {}".format(score, len(bullets))
             redo_txt = "Press Spacebar to Play Again"
             exit_txt = "Press X to Exit game"
@@ -153,7 +154,7 @@ while True:
             if ranking_displayed is False:
                 ranking_displayed = True
                 ranking_processor.add_to_ranking_file(score)
-            ranking_processor.render_ranking_board(screen)
+            ranking_processor.render_ranking_board(screen, score)
 
         else:
             score = time.time() - start_time

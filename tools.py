@@ -48,7 +48,7 @@ class RankingProcessor:
     # 기록을 저장할 때는 소숫점 아래 1자리까지 표현하는 str로 저장(2번째 자리에서 반올림)
     def add_to_ranking_file(self, new_record:float):
         # 랭킹 정보 추가(소수점 아래 2번째에서 반올림해줌)
-        self.records.append("{:0.1f}".format(round(new_record, 2)))
+        self.records.append("{:0.1f}".format(round(new_record, 1)))
         # 랭킹 정렬(내림차순)
         self.records.sort(key=lambda r: float(r), reverse=True)
         
@@ -61,14 +61,17 @@ class RankingProcessor:
         
 
     # 점수판 렌더링
-    def render_ranking_board(self, screen):
+    def render_ranking_board(self, screen, score):
         width, height = screen.get_size()
         board_width, board_height = width * 0.3, height * 0.45
         
         pg.draw.rect(screen, c.color['GREY'], [width/2-board_width/2-5, 250, board_width, board_height])
 
         # 등수 렌더링(폰트때문에 점수 기록과 따로 렌더링함)
+        
         for i in range(len(self.records)):
+            font_color = c.color['RED'] if self.records[i] == str(score) else c.color['BLACK']
+            
             if i == 0 :
                 rank = "1st"
             elif i == 1 :
@@ -77,11 +80,12 @@ class RankingProcessor:
                 rank = "3rd"
             else :
                 rank = str(i+1) + "th"
-            draw_text(screen, "{:>5}".format(rank), 40, (width/2-board_width/2+50, 270 + 30 * i), c.color['BLACK'])
+            draw_text(screen, "{:>5}".format(rank), 40, (width/2-board_width/2+50, 270 + 30 * i), font_color)
 
         # 점수 기록 렌더링
         for i in range(len(self.records)):
-            draw_text(screen, "{:>6}".format(self.records[i]), 40, (width/2-board_width/2+140, 270 + 30 * i), c.color['BLACK'])
+            font_color = c.color['RED'] if self.records[i] == str(score) else c.color['BLACK']
+            draw_text(screen, "{:>6}".format(self.records[i]), 40, (width/2-board_width/2+140, 270 + 30 * i), font_color)
 
         
 
