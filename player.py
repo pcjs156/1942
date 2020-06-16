@@ -1,5 +1,8 @@
+# 플레이어(비행기) 클래스
+
 import pygame as pg
 import time
+import math
 
 from const import Const as c
 
@@ -82,6 +85,13 @@ class Player:
         self.pos[0] = min(max(self.pos[0], c.size['PLAYER_WIDTH']), c.size['SCREEN_WIDTH']-c.size['PLAYER_WIDTH'])
         self.pos[1] = min(max(self.pos[1], c.size['PLAYER_HEIGHT']), c.size['SCREEN_HEIGHT']-c.size['PLAYER_HEIGHT'])
     
+    # 충돌 감지 함수
+    def collision(self, bullet):
+        if math.sqrt((self.pos[0] - bullet.pos[0])**2 +
+                    (self.pos[1] - bullet.pos[1])**2) < 20 :
+            return True
+        return False
+
     # * 피격당했을 경우 
     # 1.플레이어의 HP를 총알의 데미지만큼 깎음
     # 2.플레이어가 피격당한 CPU시간을 기록
