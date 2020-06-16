@@ -107,7 +107,5 @@ class Player:
     def invincible_time_chk(self):
         # 제일 마지막에 피격당한 시간에서 c.INVINCIBLE초 이상 흘렀으면 무적시간이 끝난 것
         if time.time() - self.attacked_time >= c.INVINCIBLE:
+            # 따라서 무적상태 해제
             self.is_invincible = False
-            return False
-        else :
-            return True

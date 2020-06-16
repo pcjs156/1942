@@ -240,29 +240,27 @@ while True:
 
         # 이상 렌더링
         # ###################################################################
-        # 이하 충돌 감지 : 렌더링과 같은 플래그로 제어되지만 기능 분리를 위해 따로 씀
+        # 이하 충돌 감지 / 총알 추가 : 렌더링과 같은 플래그로 제어되지만 기능 분리를 위해 따로 씀
 
-
+        
+        # 게임오버되지 않았다면
         if not gameover:
+            # 무적시간이 끝났는지 검사하고, 처리한다
             player.invincible_time_chk()
-            # 충돌 감지
+
+            # 총알 각각에 대한 충돌 검사
             for b in bullets:
-                if player.collision(b):
-                    # 무적상태가 아니라면...(피격 당하지 않았고, 따라서 무적도 아닌 경우)
-                    if player.is_invincible is False:
-                        if player.invincible_time_chk() is False:
-                            # b의 데미지를 attacked안에서 확인
-                            player.attacked(b)
-                            # 게임이 종료될 조건인지 확인
-                            if player.HP <= 0:
-                                gameover = True
-                                getting_event = False
-                                # 미션 1 : boom.wav를 불러와 1번 재생
-                                pg.mixer.music.load('resource/sounds/boom.wav')
-                                pg.mixer.music.play(1)
-                        else:
-                            # b의 데미지를 attacked안에서 확인
-                            player.attacked(b)
+                # 만약 충돌했는데 무적 상태가 아니라면
+                if player.collision(b) and not player.is_invincible:
+                    # 일단 한 대 맞고
+                    player.attacked(b)
+                    # 만약 맞았는데 체력이 0 이하이면
+                    if player.HP <= 0 :
+                        # 게임 오버 플래그로 표시하고
+                        gameover = True
+                        # 꽝! 하는 소리를 한 번 재생한다
+                        pg.mixer.music.load('resource/sounds/boom.wav')
+                        pg.mixer.music.play(1)
 
             # 1초당 총알 하나씩 추가
             time_for_adding_bullets += dt * c.DIFFICULTY
@@ -270,6 +268,7 @@ while True:
                 bullets.append(Bullet.return_random_bullet(0, rnd.random()*HEIGHT, rnd.random()-0.5, rnd.random()-0.5))
                 time_for_adding_bullets -= 1000
 
+    # 위에서 게임이 종료되었을 때 X를 눌러 게임을 다시 시작하지 않을 경우
     if not restart:
         print('''
 88                                     88                                  
