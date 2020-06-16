@@ -44,7 +44,7 @@ while True:
     battery_cells_info = [((25, i*19+75, 30, 19), c.color["BATTERY"][i]) for i in range(5)]
 
     # 총알 객체 준비 : 10개의 총알을 랜덤하게 받아옴
-    bullets = [Bullet.return_random_bullet(0, rnd.random()*HEIGHT, rnd.random()-0.5, rnd.random()-0.5) for _ in range(10)]
+    bullets = [Bullet.return_random_bullet(0, rnd.random()*HEIGHT, rnd.random()-0.5, rnd.random()-0.5) for _ in range(Bullet.initial_bullet_cnt)]
     time_for_adding_bullets = 0
 
     # 배경 객체 준비(플레이어와 마찬가지로 입력에 의해 움직이도록 하기 위해)
