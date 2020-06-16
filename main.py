@@ -263,7 +263,7 @@ while True:
                         pg.mixer.music.play(1)
 
             # 1초당 총알 하나씩 추가
-            time_for_adding_bullets += dt * c.DIFFICULTY
+            time_for_adding_bullets += dt * Bullet.new_bullet
             if time_for_adding_bullets > 1000 :
                 bullets.append(Bullet.return_random_bullet(0, rnd.random()*HEIGHT, rnd.random()-0.5, rnd.random()-0.5))
                 time_for_adding_bullets -= 1000

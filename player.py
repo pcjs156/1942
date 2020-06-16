@@ -18,6 +18,9 @@ class Player:
 
     # 플레이어 기본 속도
     SPEED = 30
+    # 플레이어 무적 시간(초)
+    INVINCIBLE = 2
+
     # 미션 2 수정 : Player 이미지를 폭발 이미지로 바꾸는 코드를 main.py에서 player.py로 옮김 
     boom_image = pg.image.load('resource/img/flame.png')
     boom_image = pg.transform.scale(boom_image, c.size['PLAYER_SIZE'])
@@ -139,7 +142,7 @@ class Player:
     # * 피격당했는데 또 맞았을 경우 메인 함수에서 체크함
     def invincible_time_chk(self):
         # 제일 마지막에 피격당한 시간에서 c.INVINCIBLE초 이상 흘렀으면 무적시간이 끝난 것
-        if time.time() - self.attacked_time >= c.INVINCIBLE:
+        if time.time() - self.attacked_time >= Player.INVINCIBLE:
             # 따라서 무적상태 해제
             self.is_invincible = False
 

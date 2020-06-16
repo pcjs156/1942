@@ -3,11 +3,6 @@
 class Const:
     # FPS
     FPS = 60
-    # 무적시간
-    INVINCIBLE = 2
-
-    # 초당 생성되는 새 총알의 갯수
-    DIFFICULTY = 1
 
     # RGB코드
     color = {

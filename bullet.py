@@ -16,6 +16,8 @@ class Bullet:
     
     # 게임을 시작할 때 생성할 총알 갯수
     initial_bullet_cnt = 10
+    # 초당 생성되는 새 총알의 갯수
+    new_bullet = 1
 
     # 약, 중, 강 총알의 비율을 4 : 2 : 1로 정함(확률 구현)
     bullet_box = ['w'] * 4 + ['n'] * 2 + ['h'] * 1
