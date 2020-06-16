@@ -1,0 +1,19 @@
+Author ######################################################################
+박유빈
+itqkrdbqls1001@naver.com
+https://github.com/pcjs156 (해당 프로젝트: https://github.com/pcjs156/1942)
+
+
+Description #################################################################
+국민대학교 소프트웨어학부 과학과 소프트웨어적 사고 기말시험 대체 과제
+main.py로 게임을 실행하시면 됩니다
+
+
+Settings ####################################################################
+: 아래 변수를 제외한 다른 변수는 조정하지 않을 것을 권장합니다(ex. Player.HP)
+
+무적 시간 조정 : player.py -> Player.INVINCIBLE
+플레이어 속도 조정 : player.py -> Player.SPEED
+
+게임을 시작할 때 생성할 총알 갯수 조정 : bullet.py -> Bullet.initial_bullet_cnt
+초당 생성되는 새 총알의 갯수 조정 : bullet.py -> Bullet.new_bullet
