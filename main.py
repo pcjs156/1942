@@ -24,6 +24,8 @@ screen = pg.display.set_mode(c.size['SCREEN_SIZE'])
 clock = pg.time.Clock()
 FPS = c.FPS
 
+# 효과음 로딩
+boom_sound = pg.mixer.Sound('resource/sounds/boom.wav')
 
 # 이상 pygame 초기화 / 기본 세팅
 # ###################################################################
@@ -261,8 +263,8 @@ while True:
                         # 게임 오버 플래그로 표시하고
                         gameover = True
                         # 꽝! 하는 소리를 한 번 재생한다
-                        pg.mixer.music.load('resource/sounds/boom.wav')
-                        pg.mixer.music.play(1)
+                        pg.mixer.Sound.play(boom_sound)
+                        # pg.mixer.music.play(1)
 
             # 1초당 총알 하나씩 추가
             time_for_adding_bullets += dt * Bullet.new_bullet
