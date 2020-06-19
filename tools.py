@@ -2,6 +2,7 @@
 
 import pickle
 import os
+import time
 
 import pygame as pg
 from const import Const as c
@@ -15,7 +16,18 @@ def draw_text(screen, txt, size, pos, color):
     r = font.render(txt, True, color)
     screen.blit(r, pos)
 
-# 이하 텍스트 렌더링 함수
+# 이상 텍스트 렌더링 함수
+# ###################################################################
+# 이하 토큰 발급 함수
+# : 기록 정보를 서로 구분하기 위함(동점자 등)
+# : 랭킹 정보 발급 시간(time())으로 부여
+# : Python이 Stable한 정렬을 하기 때문에 순위 내에 동점자가 있을 경우
+# : 먼저 등록된 플레이어의 기록만 10위권에 표시된다. 나머지는 잘림.
+
+def get_token():
+    return int(time.time())
+
+# 이상 토큰 발급 함수
 # ###################################################################
 # 이하 RankingProcessor클래스
 # : 주로 파일을 pickle의 형태로 읽고, 쓰고, 사용하는 역할
@@ -65,11 +77,11 @@ class RankingProcessor:
 
     # 개임 내에서 기록을 0.1초 단위로 기록하므로
     # 기록을 저장할 때는 소숫점 아래 1자리까지 표현하는 str로 저장(2번째 자리에서 반올림)
-    def add_to_ranking_file(self, new_record:float):
+    def add_to_ranking_file(self, new_record, token):
         # 랭킹 정보 추가(소수점 아래 2번째에서 반올림해줌)
-        self.records.append("{:0.1f}".format(round(new_record, 1)))
+        self.records.append(("{:0.1f}".format(round(new_record, 1)), token))
         # 랭킹 정렬(내림차순)
-        self.records.sort(key=lambda r: float(r), reverse=True)
+        self.records.sort(key=lambda r: float(r[0]), reverse=True)
         
         # 상위기록 10개를 제외한 나머지 기록을 버림
         self.records = self.records[:10]
@@ -85,7 +97,7 @@ class RankingProcessor:
 
 
     # 점수판 렌더링
-    def render_ranking_board(self, screen, score):
+    def render_ranking_board(self, screen, token):
         width, height = screen.get_size()
         board_width, board_height = width * 0.3, height * 0.45
         
@@ -94,8 +106,9 @@ class RankingProcessor:
 
         # 렌더링
         for i in range(len(self.records)):
-            # 이번에 입력된 기록(records)와 같은 값이 현재 저장된 순위 리스트 안에 있으면 붉은 색으로 강조 
-            font_color = c.color['RED'] if self.records[i] == str(score) else c.color['BLACK']
+            # 이번에 입력된 기록(records)의 토큰과 현재 기록의 토큰이 같으면 이번에 순위권에 들어갔다는 의미
+            # 따라서 붉은 색으로 강조 
+            font_color = c.color['RED'] if self.records[i][1] == token else c.color['BLACK']
             
             # 등수 렌더링 : 1~3등을 제외한 나머지 4~10등은 뒤에 th를 붙임
             if i == 0 :
@@ -108,9 +121,9 @@ class RankingProcessor:
                 rank = str(i+1) + "th"
             draw_text(screen, "{:>5}".format(rank), 40, (width/2-board_width/2+50, 270 + 30 * i), font_color)
 
-            # 점수 렌더링
-            font_color = c.color['RED'] if self.records[i] == str(score) else c.color['BLACK']
-            draw_text(screen, "{:>6}".format(self.records[i]), 40, (width/2-board_width/2+140, 270 + 30 * i), font_color)
+            # 점수 렌더링 : 토큰으로 구별
+            font_color = c.color['RED'] if self.records[i][1] == token else c.color['BLACK']
+            draw_text(screen, "{:>6}".format(self.records[i][0]), 40, (width/2-board_width/2+140, 270 + 30 * i), font_color)
 
 
     # 이상 기능 구현 :점수판 렌더링

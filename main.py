@@ -8,7 +8,7 @@ from player import Player
 from bullet import *
 from background import Background
 
-from tools import RankingProcessor, draw_text
+from tools import RankingProcessor, draw_text, get_token
 
 
 # 이상 모듈/클래스 import
@@ -106,6 +106,8 @@ while True:
 
     # 생존 시간 기록용
     start_time = time.time()
+    # 생존시간이 같은 플레이 기록을 서로 구별하기 위해 발급
+    token = get_token()
     while running:
         # FPS 설정(
         dt = clock.tick(FPS)
@@ -213,9 +215,9 @@ while True:
             # while 루프가 한 번 돌 때마다 이번 판의 기록을 계속 추가함
             if recorded is False:
                 recorded = True
-                ranking_processor.add_to_ranking_file(score)
+                ranking_processor.add_to_ranking_file(score, token)
             # 랭킹 정보 렌더링
-            ranking_processor.render_ranking_board(screen, score)
+            ranking_processor.render_ranking_board(screen, token)
 
 
         # 게임이 아직 안 끝났을 경우
