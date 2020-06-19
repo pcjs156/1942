@@ -122,7 +122,6 @@ class RankingProcessor:
             draw_text(screen, "{:>5}".format(rank), 40, (width/2-board_width/2+50, 270 + 30 * i), font_color)
 
             # 점수 렌더링 : 토큰으로 구별
-            font_color = c.color['RED'] if self.records[i][1] == token else c.color['BLACK']
             draw_text(screen, "{:>6}".format(self.records[i][0]), 40, (width/2-board_width/2+140, 270 + 30 * i), font_color)
 
 
